@@ -22,8 +22,9 @@ class App(tk.Tk):
             self.taskEntry.delete(0, tk.END)
 
         def removeItem(event):
+            print(event.y)
             idx = self.taskListbox.curselection()
-            if idx and event.y >= idx[0]*20 and event.y <= idx[0]*20+20:
+            if idx and event.y >= 22+((idx[0]-1)*16) and event.y <= 22+((idx[0])*16):
                 self.taskListbox.delete(idx)
 
 
