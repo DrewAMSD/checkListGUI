@@ -3,7 +3,7 @@ import tkinter as tk
 class App(tk.Tk):
     def __init__(self):
         super().__init__()
-        self.geometry("520x420")
+        self.geometry("560x420")
         self.title("Check List")
         self.config(background="#ffffff")
         
@@ -11,15 +11,33 @@ class App(tk.Tk):
         icon = tk.PhotoImage(file="checkMark.png")
         self.iconphoto(True, icon)
         # self.resizable(False, False)
-        self.minsize(520, 420)
+        self.minsize(560, 420)
+
+        # commands for widgets
+        def addTaskBtnClicked():
+            text1 = self.dateEntry.get()
+            text2 = self.taskEntry.get()
+            self.taskListbox.insert(tk.END, f"{text1} - {text2}")
+            self.dateEntry.delete(0, tk.END)
+            self.taskEntry.delete(0, tk.END)
+
+        def removeItem(event):
+            idx = self.taskListbox.curselection()
+            if idx and event.y >= idx[0]*20 and event.y <= idx[0]*20+20:
+                self.taskListbox.delete(idx)
+
 
         # widgets
         self.taskLbl = tk.Label(self,text="Task:", bg="#ffffff")
-        self.taskEntry = tk.Text(self,width=50,height=3)
+        self.taskEntry = tk.Entry(self,width=70)
         self.dateLbl = tk.Label(self,text="Date(mm/dd/yy):", bg="#ffffff")
         self.dateEntry = tk.Entry(self,width=20)
         self.addTaskBtn = tk.Button(self,
-                         text="Add Task")
+                         text="Add Task",
+                         command=addTaskBtnClicked)
+        self.taskListbox = tk.Listbox(self,width=70)
+
+        self.taskListbox.bind("<Button-1>", removeItem)
 
         # place widgets
         self.taskLbl.pack()
@@ -27,6 +45,8 @@ class App(tk.Tk):
         self.dateLbl.pack()
         self.dateEntry.pack()
         self.addTaskBtn.pack()
+        self.taskListbox.pack()
+
 
 if __name__ == "__main__":
     root = App()
